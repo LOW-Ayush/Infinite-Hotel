@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Targeting
+  - Enemy
+  - Obstructor
+  - Spawns
+  - FoundPlayer
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Crosshair
+  - Water
+  - UI
+  - Actors
+  - Obstructors
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3419688829
+    locked: 0
+  - name: Walls
+    uniqueID: 758521909
+    locked: 0
+  - name: Bullets
+    uniqueID: 974481797
+    locked: 0
+  - name: Actors
+    uniqueID: 4290934807
+    locked: 0
+  - name: Crosshair
+    uniqueID: 3047933521
+    locked: 0

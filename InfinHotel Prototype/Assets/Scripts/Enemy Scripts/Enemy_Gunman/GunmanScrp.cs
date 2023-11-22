@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GunmanScrp : MonoBehaviour
 {
@@ -9,21 +10,19 @@ public class GunmanScrp : MonoBehaviour
     public LayerMask obstructorLayer;
     public bool LineofSight;
     public float VisionCone;
-    public bool Aware;
+    public static bool Aware;
     public bool inSight;
     public float Currentangle;
 
     private float timer;
     private Rigidbody2D rb;
-    public float MoveSpeed;
 
-    //private RaycastHit2D lastknown;
+    [SerializeField] private GunmanScrp Gunman_Scrp;
     private RaycastHit2D Seen;
-    public Vector2 pointSeen;
-    private Vector2 LastKnownLoc;
+    public static Vector2 pointSeen;
     public bool Closest;
 
-
+    private NavMeshAgent agent;
 
     //public float ReactionTime;
     //public float turnSpeed;
@@ -34,6 +33,9 @@ public class GunmanScrp : MonoBehaviour
         AlertLvl = 1;
         rb = GetComponent<Rigidbody2D>();
         Closest = false;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
@@ -52,7 +54,6 @@ public class GunmanScrp : MonoBehaviour
         //Raycasting for to check for clear line of sight
         if (!Physics2D.Raycast(transform.position, Direction, Distance, obstructorLayer))
         {
-            //Debug.Log("unobstructed raycast");
             LineofSight = true;
         }
         else
@@ -64,97 +65,59 @@ public class GunmanScrp : MonoBehaviour
         Currentangle = Vector3.Angle(Direction, transform.up);
         if (Vector3.Angle(Direction, transform.up) < VisionCone && LineofSight)
         {
-            //Debug.Log("has seen player");
-
             //enemy is aware of the player
             Aware = true;
-            AlertLvl= 3;
+            AlertLvl = 3;
             inSight = true;
 
             Seen = Physics2D.Raycast(transform.position, Direction, Distance, targetLayer);
             pointSeen = new Vector2(Seen.transform.position.x, Seen.transform.position.y);
-            tag.Replace("Enemy", "FoundPlayer");
 
             //turn and shoot at player as they are within sight
-            rb.MoveRotation(Zrotation); 
+            rb.MoveRotation(Zrotation);
+            agent.isStopped = true;
             gameObject.BroadcastMessage("Shoot");
-            //Debug.Log("fire");
-
-            //lastknown = Physics2D.Raycast(transform.position, Direction, Distance, targetLayer);
 
         }
         else
         {
             inSight = false;
-            gameObject.tag = "Enemy";
-        }
-
-        //Look to see if other enemys have spotted player
-        if (GameObject.FindWithTag("FoundPlayer") != null)
-        {
-            Aware = true;
         }
 
 
-        //move
+        //lost sight of player
         if (Aware && !inSight)
         {
-            GameObject enemySpot = GameObject.FindWithTag("FoundPlayer");
-            //LastKnownLoc = enemySpot.GetComponent<GunmanScrp>().pointSeen;
-
-            Investigate(pointSeen);
-            /*
-            else
+            Vector2 direction = pointSeen - new Vector2(transform.position.x, transform.position.y);
+            transform.up = direction;
+            agent.isStopped = false;
+            agent.SetDestination(pointSeen);
+            AlertLvl = 2;
+            if (new Vector2(transform.position.x, transform.position.y) == pointSeen)
             {
-                StandBy(GoHere);
-            }*/
+                SearchPatterns();
+            }
         }
-       
     }
-    
+
+    //going to last seen location
     private void Investigate(Vector2 location)
     {
-        AlertLvl = 2;
-        //go to player's last known location
-        float Distance = Vector2.Distance(transform.position, location);
-        if (Distance > 0)
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, location, MoveSpeed * Time.deltaTime);
-        }
-        if (Distance == 0 && !inSight)
-        {
-            //look around for player (THERE MUST BE CLEANER WAY TO DO THIS)
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                rb.MoveRotation(rb.rotation + 90);
-                timer = 0;
-            }
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                rb.MoveRotation(rb.rotation - 90);
-                timer = 0;
-            }
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                rb.MoveRotation(rb.rotation - 90);
-                timer = 0;
-            }
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                rb.MoveRotation(rb.rotation + 90);
-                timer = 0;
-            }
-            //ultimately this just makes the fella look right, forward, then left, then forward again.
-        }
-
+       
     }
 
-    private void StandBy(Vector2 location)
+    //looking for player
+    private void SearchPatterns()
     {
+        Debug.Log("Executing search...");   
+    }
 
+    private void OnDrawGizmos()
+    {
+        if (pointSeen != null)
+        {
+            Gizmos.DrawIcon(pointSeen, "Point Seen");
+            Gizmos.DrawLine(transform.position, pointSeen);
+        }
     }
 }

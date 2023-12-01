@@ -90,26 +90,79 @@ public class GunmanScrp : MonoBehaviour
         {
             Vector2 direction = pointSeen - new Vector2(transform.position.x, transform.position.y);
             transform.up = direction;
-            agent.isStopped = false;
-            agent.SetDestination(pointSeen);
-            AlertLvl = 2;
-            if (new Vector2(transform.position.x, transform.position.y) == pointSeen)
+
+            //Checking if they are the closest person
+            CheckClosest();
+
+            //if they are the closest go to last seen location
+            if (Closest)
             {
-                SearchPatterns();
+                agent.isStopped = false;
+                agent.SetDestination(pointSeen);
+                AlertLvl = 2;
+                if (new Vector2(transform.position.x, transform.position.y) == pointSeen)
+                {
+                    SearchPatterns();
+                }
+            }
+            //else move to establish line of sight
+            else
+            {
+                agent.isStopped = false;
+                agent.SetDestination(pointSeen);
+                AlertLvl = 2;
+
+                Vector2 towardsPS = pointSeen - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+                float distPS = Vector2.Distance(transform.position, pointSeen);
+                //Raycasting for to check for clear line of sight
+                if (!Physics2D.Raycast(transform.position, towardsPS, distPS, obstructorLayer))
+                {
+                    agent.isStopped = true;
+
+                }
+
             }
         }
-    }
-
-    //going to last seen location
-    private void Investigate(Vector2 location)
-    {
-       
     }
 
     //looking for player
     private void SearchPatterns()
     {
         Debug.Log("Executing search...");   
+    }
+    private void CheckClosest()
+    {
+        int iter = 0;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+        float[] dists = new float[objs.Length];
+        foreach (GameObject obj in objs)
+        {
+            dists[iter] = Vector2.Distance(obj.transform.position, pointSeen);
+            iter++;
+        }
+
+        //moving the lowesr value into the front of the array
+        float value = float.PositiveInfinity;
+        int index = -1;
+        for (int i = 0; i < dists.Length; i++)
+        {
+            if (dists[i] < value)
+            {
+                index = i;
+                value = dists[i];
+            }
+        }
+
+        //if they are that value they are the closest
+        if (dists[index] == Vector2.Distance(gameObject.transform.position, pointSeen))
+        {
+            Closest = true;
+        }
+        else
+        {
+            Closest = false;
+        }
+        
     }
 
     private void OnDrawGizmos()
@@ -118,6 +171,17 @@ public class GunmanScrp : MonoBehaviour
         {
             Gizmos.DrawIcon(pointSeen, "Point Seen");
             Gizmos.DrawLine(transform.position, pointSeen);
+
+            if (Closest)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(transform.position, 0.05f);
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, 0.05f);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour
     private CircleCollider2D hitBox;
     private SpriteRenderer VisRep;
     private Vector3 offset;
+    public Vector2 playerNormal;
 
     private void Start()
     {
@@ -24,6 +25,14 @@ public class PlayerScript : MonoBehaviour
         float Zrotation = Mathf.Atan2(Rotation.y, Rotation.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0, 0, Zrotation);
 
+        //facing direction represented as a normal
+        playerNormal = new Vector2(Rotation.x,Rotation.y);
+        playerNormal = playerNormal.normalized;
+    }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, playerNormal);
     }
 }

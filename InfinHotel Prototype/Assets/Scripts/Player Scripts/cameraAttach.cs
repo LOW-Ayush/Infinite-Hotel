@@ -15,7 +15,7 @@ public class cameraAttach : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 offset = new Vector3(0,0,-10);
+        Vector3 offset = new Vector3(0,0,-7);
         transform.position = player.position + offset;
     }
 }

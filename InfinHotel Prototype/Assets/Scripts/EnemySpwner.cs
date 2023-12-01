@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class EnemySpwner : MonoBehaviour
 {
-    public static bool playerSpotted;
     public GameObject Enemy;
     //public Vector2 playerLoc;
     void Start()
     {
-        playerSpotted = false;
         GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawns");
         foreach (GameObject spawn in spawns)
         {

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 62204056896055347}
   - component: {fileID: 62204056896055358}
   - component: {fileID: 62204056896055345}
+  - component: {fileID: 5423201136916312288}
   - component: {fileID: 9208646978692951380}
   - component: {fileID: 149367031595733639}
   - component: {fileID: 6869625589929091142}
@@ -106,6 +107,20 @@ CircleCollider2D:
   m_Offset: {x: 0.0007462725, y: 0.013681598}
   serializedVersion: 2
   m_Radius: 0.075
+--- !u!114 &5423201136916312288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62204056896055346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c5a4106d8a776c4eb6777f2c7bd4d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 0
+  CurrentHealth: 0
 --- !u!114 &9208646978692951380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 745bda6dbb4041d40a939455658b77e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnHealth: 2
+  KIAsprite: {fileID: 21300000, guid: 430eca44de82ffa4e9b3118d208aa3c5, type: 3}
   AlertLvl: 0
   targetLayer:
     serializedVersion: 2
@@ -131,6 +148,7 @@ MonoBehaviour:
   Currentangle: 0
   Gunman_Scrp: {fileID: 0}
   Closest: 0
+  turnSpeed: 6
 --- !u!50 &149367031595733639
 Rigidbody2D:
   serializedVersion: 4

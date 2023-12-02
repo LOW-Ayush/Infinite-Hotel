@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class GunmanScrp : MonoBehaviour
 {
+    public bool dead;
+    public float SpawnHealth;
+    public Sprite KIAsprite;
+
     public int AlertLvl;
     public LayerMask targetLayer;
     public LayerMask obstructorLayer;
@@ -13,6 +17,7 @@ public class GunmanScrp : MonoBehaviour
     public static bool Aware;
     public bool inSight;
     public float Currentangle;
+    private enemyshooting fire;
 
     private float timer;
     private Rigidbody2D rb;
@@ -25,30 +30,36 @@ public class GunmanScrp : MonoBehaviour
     private NavMeshAgent agent;
 
     //public float ReactionTime;
-    //public float turnSpeed;
-    //public bool Visible;
+    public float turnSpeed;
 
     void Start()
     {
+        EnemyHealth healthmanager = gameObject.GetComponent<EnemyHealth>();
+        healthmanager.SetupHealthManager(SpawnHealth, KIAsprite);
+
         AlertLvl = 1;
         rb = GetComponent<Rigidbody2D>();
         Closest = false;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        fire = gameObject.GetComponentInChildren<enemyshooting>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        FOV();
+        if (!dead)
+        {
+            FOV();
+        }
     }
 
     private void FOV()
     {
         Vector3 Target = GameObject.Find("Player").GetComponent<Transform>().position;
-        Vector3 Direction = Target - transform.position;
-        float Zrotation = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90f;
+        Vector2 Direction = (Target - transform.position).normalized;
+        float zRotation = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90f;
         float Distance = Vector2.Distance(transform.position, Target);
 
         //Raycasting for to check for clear line of sight
@@ -74,10 +85,10 @@ public class GunmanScrp : MonoBehaviour
             pointSeen = new Vector2(Seen.transform.position.x, Seen.transform.position.y);
 
             //turn and shoot at player as they are within sight
-            rb.MoveRotation(Zrotation);
             agent.isStopped = true;
-            gameObject.BroadcastMessage("Shoot");
-
+            Quaternion lookRotation = Quaternion.LookRotation(transform.forward, Direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
+            fire.Shoot();
         }
         else
         {
@@ -89,7 +100,8 @@ public class GunmanScrp : MonoBehaviour
         if (Aware && !inSight)
         {
             Vector2 direction = pointSeen - new Vector2(transform.position.x, transform.position.y);
-            transform.up = direction;
+            Quaternion lookRotation = Quaternion.LookRotation(transform.forward, direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
 
             //Checking if they are the closest person
             CheckClosest();
@@ -164,7 +176,18 @@ public class GunmanScrp : MonoBehaviour
         }
         
     }
+    
+    public void Death()
+    {
+        GameObject.Find("Status Marker").SetActive(false);
+        gameObject.GetComponent<GunmanScrp>().enabled = false;
+    }
 
+
+
+
+
+    //gizmos
     private void OnDrawGizmos()
     {
         if (pointSeen != null)

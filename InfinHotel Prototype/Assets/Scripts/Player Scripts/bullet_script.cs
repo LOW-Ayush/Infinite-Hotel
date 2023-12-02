@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class bullet_script : MonoBehaviour
 {
+    public float damage;
+
     private Transform targeting;
     private Transform player;
     private Rigidbody2D rb;
@@ -19,15 +20,14 @@ public class bullet_script : MonoBehaviour
         transform.rotation = player.rotation;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     void OnTriggerEnter2D(Collider2D objecthit)
     {
         if (objecthit.gameObject.CompareTag("Enemy"))
         {
+            //reduce enemy health
+            EnemyHealth enemyHealth = objecthit.GetComponent<EnemyHealth>();
+            enemyHealth.ReduceHealth(damage);
+
             Destroy(gameObject);
         }
         else if (objecthit.gameObject.CompareTag("Obstructor"))

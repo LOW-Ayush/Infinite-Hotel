@@ -1,9 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    public float CurrentHealth;
+    public float MaxHealth;
+    public Slider healthbar;
+
     private CircleCollider2D hitBox;
     private SpriteRenderer VisRep;
     private Vector3 offset;
@@ -12,10 +16,33 @@ public class PlayerScript : MonoBehaviour
     private void Start()
     {
         transform.position = (transform.parent.position);
+
+        MaxHealth = 4;
+        CurrentHealth = MaxHealth;
+        healthbar.maxValue = MaxHealth;
+        healthbar.value = CurrentHealth;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        CurrentHealth -= damage;
+        Debug.Log("player damaged");
+
+
+        //damage effects
+
+        //if health 0, then dead
+        if (CurrentHealth == 0)
+        {
+            Debug.Log("dead... :(");
+        }
     }
 
     void FixedUpdate()
     {
+
+        //represent health on health bar
+        healthbar.value = CurrentHealth;
 
         transform.forward = Vector3.forward;
         Vector3 CursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

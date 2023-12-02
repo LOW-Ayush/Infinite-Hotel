@@ -8,6 +8,7 @@ public class EnemyBulletScript : MonoBehaviour
     private Rigidbody2D rb;
     public float bulletspeed;
     private float timer;
+    public float damage;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,8 @@ public class EnemyBulletScript : MonoBehaviour
         rb.velocity = new Vector2(direction.x, direction.y).normalized * bulletspeed;
         float Zrotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0, 0, Zrotation);
+
+        damage = 1;
     }
 
     // Update is called once per frame
@@ -33,9 +36,12 @@ public class EnemyBulletScript : MonoBehaviour
     {
         if (objecthit.gameObject.CompareTag("Player") == true)
         {
-
-            //player damage effect
             //player takes damage
+            PlayerScript player = objecthit.GetComponent<PlayerScript>();
+            player.TakeDamage(damage);
+
+
+            //bullet is destroyed
             Destroy(gameObject);
         }
         if (objecthit.gameObject.CompareTag("Obstructor") == true)

@@ -19,9 +19,6 @@ public class GunmanScrp : MonoBehaviour
     public float Currentangle;
     private enemyshooting fire;
 
-    private float timer;
-    private Rigidbody2D rb;
-
     [SerializeField] private GunmanScrp Gunman_Scrp;
     private RaycastHit2D Seen;
     public static Vector2 pointSeen;
@@ -37,13 +34,16 @@ public class GunmanScrp : MonoBehaviour
         EnemyHealth healthmanager = gameObject.GetComponent<EnemyHealth>();
         healthmanager.SetupHealthManager(SpawnHealth, KIAsprite);
 
-        AlertLvl = 1;
-        rb = GetComponent<Rigidbody2D>();
-        Closest = false;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         fire = gameObject.GetComponentInChildren<enemyshooting>();
+
+        //reset all values
+        Closest = false;
+        AlertLvl = 1;
+        Aware = false;
+        pointSeen = new Vector2(0,0);
     }
 
     // Update is called once per frame
@@ -59,7 +59,6 @@ public class GunmanScrp : MonoBehaviour
     {
         Vector3 Target = GameObject.Find("Player").GetComponent<Transform>().position;
         Vector2 Direction = (Target - transform.position).normalized;
-        float zRotation = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90f;
         float Distance = Vector2.Distance(transform.position, Target);
 
         //Raycasting for to check for clear line of sight

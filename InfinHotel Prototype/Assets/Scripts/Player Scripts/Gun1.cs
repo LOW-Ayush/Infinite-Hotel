@@ -9,7 +9,9 @@ public class Gun1 : MonoBehaviour
     public bool canFire;
     private float timer;
     public float fireRate;
-    void FixedUpdate()
+
+
+    void Update()
     {
         if (!canFire)
         {

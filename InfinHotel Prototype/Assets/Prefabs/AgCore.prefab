@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 7907224407020582514}
   - component: {fileID: 7907224407020582513}
   - component: {fileID: 7907224407020582512}
+  - component: {fileID: 5683337095837694323}
+  - component: {fileID: 8877725984396221228}
   m_Layer: 10
-  m_Name: AngelTest
+  m_Name: AgCore
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,6 +62,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920c0c7ebccdf6748b90793561f00be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coreSize: 
+  deathSprite: {fileID: 21300000, guid: 021bc405cab0faa46a5c6e8a05a6ea9a, type: 3}
+  visioncone: 0
+  visionrange: 0
 --- !u!212 &7907224407020582512
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -112,3 +118,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5683337095837694323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907224407020582519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 931f714667af29744968b67080d4f44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: 
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  obstructorLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &8877725984396221228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907224407020582519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df888588e65e2044b1ef36d43b0257a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Range: 0
+  melee: 0

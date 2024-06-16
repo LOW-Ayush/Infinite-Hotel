@@ -9,6 +9,7 @@ TagManager:
   - Obstructor
   - Spawns
   - FoundPlayer
+  - Corpse
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Player
   - Field
   - Enemy
-  - 
-  - 
+  - NavMesh Ignore
+  - Loot
   - 
   - 
   - 

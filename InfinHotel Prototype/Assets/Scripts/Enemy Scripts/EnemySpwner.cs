@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemySpwner : MonoBehaviour
 {
     public GameObject Enemy;
-    //public Vector2 playerLoc;
     void Start()
     {
         GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawns");

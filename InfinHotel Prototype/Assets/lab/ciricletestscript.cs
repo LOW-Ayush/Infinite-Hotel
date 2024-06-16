@@ -10,6 +10,9 @@ public class ciricletestscript : MonoBehaviour
     private labGlobal global;
     public GameObject target;
     public Vector2 targetloc;
+    private Vector2 direc;
+
+    public float movespeed;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +33,8 @@ public class ciricletestscript : MonoBehaviour
 
         global = gameObject.GetComponentInParent<labGlobal>();
         float dist = Vector2.Distance(transform.position, target.transform.position);
-        if (global.closest == dist)
+        transform.rotation = Quaternion.Euler(0, 0, Zrotation);
+        /*if (global.closest == dist)
         {
             isClosest = true;
             transform.rotation = Quaternion.Euler(0, 0, Zrotation);
@@ -40,6 +44,13 @@ public class ciricletestscript : MonoBehaviour
         {
             isClosest = false;
             transform.rotation = Quaternion.Euler(0, 0, Zrotation);
+        }*/
+
+        if (Input.GetKey(KeyCode.G))
+        {
+
+            direc = direction.normalized;
+            transform.position = Vector2.MoveTowards(transform.position, -direc, 0.04f);
         }
     }
 

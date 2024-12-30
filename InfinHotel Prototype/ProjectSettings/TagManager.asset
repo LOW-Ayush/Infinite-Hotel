@@ -10,6 +10,7 @@ TagManager:
   - Spawns
   - FoundPlayer
   - Corpse
+  - Shots
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Enemy
   - NavMesh Ignore
   - Loot
-  - 
+  - Misc
   - 
   - 
   - 

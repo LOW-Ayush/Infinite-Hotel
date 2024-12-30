@@ -6,19 +6,30 @@ public class EscMenu : MonoBehaviour
 {
     static public bool isPaused;
     public GameObject gamemenu;
+    static public bool playerDeath;
+    public GameObject deathmenu;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        if (!playerDeath)
         {
-            gamemenu.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+            {
+                gamemenu.SetActive(true);
+                Time.timeScale = 0;
+                isPaused = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape) && isPaused)
+            {
+                gamemenu.SetActive(false);
+                Time.timeScale = 1;
+                isPaused = false;
+            }
+        }
+        else
+        {
+            deathmenu.SetActive(true);
             Time.timeScale = 0;
             isPaused = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isPaused)
-        {
-            gamemenu.SetActive(false);
-            Time.timeScale = 1;
-            isPaused = false;
-        }
-    }
+    } 
 }

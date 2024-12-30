@@ -164,6 +164,7 @@ MonoBehaviour:
   LineofSight: 0
   VisionCone: 50
   inSight: 0
+  reactionTime: 0.5
   Gunman_Scrp: {fileID: 0}
   Closest: 0
   check: 0

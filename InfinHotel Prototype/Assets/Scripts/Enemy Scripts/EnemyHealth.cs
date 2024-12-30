@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour
 
     public float MaxHealth;
     public float CurrentHealth;
+    private bool ready;
     private Sprite deathsprite;
 
     //sets max health from parent script
@@ -17,6 +18,7 @@ public class EnemyHealth : MonoBehaviour
         CurrentHealth = MaxHealth;
 
         deathsprite = sprite;
+        ready = true;
     }
 
     public void ReduceHealth(float damage)
@@ -24,14 +26,17 @@ public class EnemyHealth : MonoBehaviour
         CurrentHealth = CurrentHealth - damage;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(CurrentHealth == 0)
+        if (ready)
         {
-            gameObject.GetComponent<SpriteRenderer>().sprite = deathsprite;
-            Debug.Log("enemy dead");
-            gameObject.BroadcastMessage("Death");
-            gameObject.GetComponent<EnemyHealth>().enabled = false;
+            if (CurrentHealth == 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = deathsprite;
+                Debug.Log("enemy dead");
+                gameObject.BroadcastMessage("Death");
+                gameObject.GetComponent<EnemyHealth>().enabled = false;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpwner : MonoBehaviour
 {
     public GameObject Enemy;
-    void Start()
+    public void SpawnEnemies()
     {
         GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawns");
         foreach (GameObject spawn in spawns)

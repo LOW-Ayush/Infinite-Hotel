@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,6 +16,10 @@ public class GunmanScrp : MonoBehaviour
     public float VisionCone;
     public static bool Aware;
     public bool inSight;
+
+    public float reactionTime;
+    private float timer;
+    static public bool startle;
     private enemyshooting fire;
 
     [SerializeField] private GunmanScrp Gunman_Scrp;
@@ -46,11 +51,14 @@ public class GunmanScrp : MonoBehaviour
         AlertLvl = 1;
         Aware = false;
         pointSeen = new Vector2(0,0);
+        startle = true;
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
         Vector3 Target = GameObject.Find("Player").GetComponent<Transform>().position;
         Vector2 Direction = (Target - transform.position).normalized;
         float Distance = Vector2.Distance(transform.position, Target);
@@ -78,7 +86,19 @@ public class GunmanScrp : MonoBehaviour
             pointSeen = new Vector2(Seen.transform.position.x, Seen.transform.position.y);
 
             //engage player
-            AgroState(Direction);
+            timer += Time.deltaTime;
+            if (startle)
+            {
+                if (timer > 0.7f)
+                {
+                    AgroState(Direction);
+                    startle = false;
+                }
+            }
+            else if (timer > reactionTime)
+            {
+                AgroState(Direction);
+            }
         }
         else
         {

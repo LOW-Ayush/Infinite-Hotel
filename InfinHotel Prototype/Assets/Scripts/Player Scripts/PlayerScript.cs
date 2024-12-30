@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +36,12 @@ public class PlayerScript : MonoBehaviour
         if (CurrentHealth == 0)
         {
             Debug.Log("dead... :(");
+            EscMenu.playerDeath = true;
+            gameObject.tag = "Corpse";
+            gameObject.layer = 13;
+            gameObject.GetComponentInParent<MoveScrp>().enabled = false;
+            gameObject.GetComponentInChildren<Weapon>().enabled = false;
+            gameObject.GetComponent<PlayerScript>().enabled = false;
         }
     }
 

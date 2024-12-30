@@ -59,8 +59,6 @@ public class AlertLvl : MonoBehaviour
                 }
                 break;
             default:
-                Debug.Log("default");
-                icon.sprite = null;
                 break;
         }
     }
